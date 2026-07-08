@@ -394,6 +394,9 @@ local sets = {
         Ear2 = 'Wyvern Earring',
         Ring2 = 'Triumph Ring',
     },
+    TP_DRG_Aftermath = {},
+    TP_DRG_Mjollnir_Haste = {},
+    TP_DRG_Aftermath_Mjollnir_Haste = {},
     TP_THF = {
         Ear2 = 'Pilferer\'s Earring',
     },
@@ -428,6 +431,10 @@ local sets = {
     },
     WS_HighAcc = {
         Back = 'Abyss Cape',
+    },
+
+    WS_THF = {
+        Ear2 = 'Pilferer\'s Earring',
     },
 
     WS_Guillotine = {
@@ -601,6 +608,13 @@ end
 profile.HandleWeaponskill = function()
     gcmelee.DoWS()
 
+    local player = gData.GetPlayer()
+    if (player.SubJob == 'THF') then
+        gFunc.EquipSet(sets.WS_THF)
+    end
+
+    gcmelee.DoFenrirsEarring()
+
     local action = gData.GetAction()
     if (action.Name == 'Guillotine') then
         gFunc.EquipSet(sets.WS_Guillotine)
@@ -652,6 +666,19 @@ profile.HandleDefault = function()
     if (player.Status == 'Engaged') then
         if (player.SubJob == 'DRG') then
             gFunc.EquipSet(sets.TP_DRG)
+
+            local aftermath = gData.GetBuffCount('Aftermath') > 0
+            local mjollnirHaste = gData.GetBuffCount(580) > 0 -- Horizon Mjollnir Haste Buff
+
+            if aftermath then
+                gFunc.EquipSet(sets.TP_DRG_Aftermath)
+            end
+            if mjollnirHaste then
+                gFunc.EquipSet(sets.TP_DRG_Mjollnir_Haste)
+            end
+            if aftermath and mjollnirHaste then
+                gFunc.EquipSet(sets.TP_DRG_Aftermath_Mjollnir_Haste)
+            end
         elseif (player.SubJob == 'THF') then
             gFunc.EquipSet(sets.TP_THF)
         end

@@ -180,6 +180,10 @@ local sets = {
         Ring2 = { Name = 'Toreador\'s Ring', Priority = 60 },
     },
 
+    WS_THF = {
+        Ear2 = 'Pilferer\'s Earring',
+    },
+
     WS_PentaThrust = {},
     WS_WheelingThrust = {
         Hands = { Name = 'Alkyoneus\'s Brc.', Priority = 60 },
@@ -355,6 +359,13 @@ end
 
 profile.HandleWeaponskill = function()
     gcmelee.DoWS()
+
+    local player = gData.GetPlayer()
+    if (player.SubJob == 'THF') then
+        gFunc.EquipSet(sets.WS_THF)
+    end
+
+    gcmelee.DoFenrirsEarring()
 
     local action = gData.GetAction()
     if (action.Name == 'Penta Thrust') then
