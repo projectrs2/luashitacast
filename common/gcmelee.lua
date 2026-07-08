@@ -387,6 +387,11 @@ function gcmelee.SetupInterimEquipSet(sets, isRanged)
         local barthunder = gData.GetBuffCount('Barthunder')
         if (barthunder == 0) then
             interimSet = gFunc.Combine(interimSet, sets.LightningRes_NoBarthunder)
+        else
+            local carol = gData.GetBuffCount('Carol')
+            if (carol > 0) then
+                interimSet = gFunc.Combine(interimSet, sets.LightningRes_WithBarthunderCarol)
+            end
         end
     end
     if (gcdisplay.IdleSet == 'EarthRes') then interimSet = sets.EarthRes end

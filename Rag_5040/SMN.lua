@@ -192,6 +192,7 @@ local sets = {
     LightningRes_NoBarthunder = {
         Head = 'Dream Ribbon',
     },
+    LightningRes_WithBarthunderCarol = {},
     EarthRes = {
         Main = 'Auster\'s Staff', -- 20
         Head = 'Black Ribbon', -- 12

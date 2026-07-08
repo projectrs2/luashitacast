@@ -340,6 +340,11 @@ function gcinclude.DoDefaultOverride(isMelee)
         local barthunder = gData.GetBuffCount('Barthunder')
         if (barthunder == 0) then
             gFunc.EquipSet('LightningRes_NoBarthunder')
+        else
+            local carol = gData.GetBuffCount('Carol')
+            if (carol > 0) then
+                gFunc.EquipSet('LightningRes_WithBarthunderCarol')
+            end
         end
     end
     if (gcdisplay.IdleSet == 'EarthRes') then gFunc.EquipSet('EarthRes') end

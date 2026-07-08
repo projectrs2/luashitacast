@@ -641,3 +641,6 @@
 - NIN - Split Drain and Aspir sets to allow aspir to be used purely for hate
 - RDM / THF - Add Uggalepih Pendant for Cyclone
 - All Jobs - Adds a LightningRes_NoBarthunder set that is equipped when barthunder is not active for usage of items such as Dream Ribbon or Arete del Sol
+
+## v3.0.5
+- All Jobs - Adds a LightningRes_WithBarthunderCarol set that is equipped if barthunder and carol are active for usage of items such as Dream Ribbon or Arete del Sol

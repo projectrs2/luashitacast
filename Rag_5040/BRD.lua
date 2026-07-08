@@ -144,6 +144,9 @@ local sets = {
     LightningRes_NoBarthunder = {
         Head = 'Dream Ribbon',
     },
+    LightningRes_WithBarthunderCarol = {
+        Head = 'Goblin Masque',
+    },
     EarthRes = {
         Main = 'Auster\'s Staff', -- 20
         Head = 'Black Ribbon', -- 12

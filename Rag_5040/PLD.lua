@@ -171,6 +171,9 @@ local sets = {
     LightningRes_NoBarthunder = {
         Head = 'Dream Ribbon',
     },
+    LightningRes_WithBarthunderCarol = {
+        Head = 'Dream Ribbon',
+    },
     EarthRes = {
         Main = { Name = 'Club of Trials', Priority = 70 }, -- 10
         Sub = { Name = 'Nms. Shield +1', Priority = 50 }, -- 15
