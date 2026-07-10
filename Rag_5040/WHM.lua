@@ -11,6 +11,8 @@ local rdmSJMaxMP = nil -- The Max MP you have when /rdm in your idle set
 local blmSJMaxMP = nil -- The Max MP you have when /blm in your idle set
 local drkSJMaxMP = nil -- The Max MP you have when /drk in your idle set
 
+local extraThreshold = 999 -- The minimum MP for which NukeExtra StoneskinExtra, and PhalanxExtra set will be used instead of regular sets (to allow additional nukes using max mp sets or specific defensive buffing above idle max mp thresholds)
+
 -- Comment out the equipment within these sets if you do not have them or do not wish to use them
 local warlocks_mantle = { -- Don't add 2% to fastCastValue for this as it is SJ dependant
     Back = 'Warlock\'s Mantle',
@@ -641,6 +643,10 @@ local sets = {
         Legs = { Name = 'Bls. Trousers +1', Priority = 50 },
         Feet = { Name = 'Blessed Pumps +1', Priority = 50 },
     },
+
+    BanishExtra = {},
+    StoneskinExtra = {},
+    PhalanxExtra = {},
 }
 
 profile.SetMacroBook = function()
@@ -720,7 +726,7 @@ profile.HandleCommand = function(args)
 end
 
 profile.HandleDefault = function()
-    gcmage.DoDefault(sets, ninSJMaxMP, nil, blmSJMaxMP, rdmSJMaxMP, drkSJMaxMP)
+    gcmage.DoDefault(sets, ninSJMaxMP, extraThreshold, blmSJMaxMP, rdmSJMaxMP, drkSJMaxMP)
 
     local player = gData.GetPlayer()
     if (not gcinclude.horizon_safe_mode) then
@@ -744,7 +750,7 @@ profile.HandlePrecast = function()
 end
 
 profile.HandleMidcast = function()
-    gcmage.DoMidcast(sets, ninSJMaxMP, nil, blmSJMaxMP, rdmSJMaxMP, drkSJMaxMP)
+    gcmage.DoMidcast(sets, ninSJMaxMP, extraThreshold, blmSJMaxMP, rdmSJMaxMP, drkSJMaxMP)
 
     local action = gData.GetAction()
     if (action.Skill == 'Enhancing Magic') then

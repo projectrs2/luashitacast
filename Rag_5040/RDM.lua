@@ -9,6 +9,8 @@ local whmSJMaxMP = nil -- The Max MP you have when /whm in your idle set
 local blmSJMaxMP = nil -- The Max MP you have when /blm in your idle set
 local drkSJMaxMP = nil -- The Max MP you have when /drk in your idle set
 
+local extraThreshold = 999 -- The minimum MP for which NukeExtra StoneskinExtra, and PhalanxExtra set will be used instead of regular sets (to allow additional nukes using max mp sets or specific defensive buffing above idle max mp thresholds)
+
 -- Disabled on horizon_safe_mode
 local fencersRingForced = true -- Default /fring value
 local fencersRingMaxHP = 930
@@ -775,6 +777,10 @@ local sets = {
         Legs = { Name = 'Blood Cuisses', Priority = 70 },
         Feet = { Name = 'Blood Greaves', Priority = 70 },
     },
+
+    NukeExtra = {},
+    StoneskinExtra = {},
+    PhalanxExtra = {},
 }
 
 profile.SetMacroBook = function()
@@ -894,7 +900,7 @@ profile.HandleDefault = function()
         end
     end
 
-    gcmage.DoDefault(sets, ninSJMaxMP, whmSJMaxMP, blmSJMaxMP, nil, drkSJMaxMP)
+    gcmage.DoDefault(sets, ninSJMaxMP, whmSJMaxMP, blmSJMaxMP, extraThreshold, drkSJMaxMP)
 
     if (player.MP <= 40) then
         gFunc.EquipSet('blue_cotehardie')
@@ -917,7 +923,7 @@ profile.HandlePrecast = function()
 end
 
 profile.HandleMidcast = function()
-    gcmage.DoMidcast(sets, ninSJMaxMP, whmSJMaxMP, blmSJMaxMP, nil, drkSJMaxMP)
+    gcmage.DoMidcast(sets, ninSJMaxMP, whmSJMaxMP, blmSJMaxMP, extraThreshold, drkSJMaxMP)
 
     local action = gData.GetAction()
     if (action.Name == 'Haste' or action.Name == 'Refresh') then

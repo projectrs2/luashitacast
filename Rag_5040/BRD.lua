@@ -659,7 +659,7 @@ profile.HandlePrecast = function()
 end
 
 profile.HandleMidcast = function()
-    gcmage.DoMidcast(sets, ninSJMaxMP, whmSJMaxMP, blmSJMaxMP, rdmSJMaxMP, nil)
+    gcmage.DoMidcast(sets, nil, whmSJMaxMP, nil, nil, nil)
 
     local action = gData.GetAction()
     if (action.Type == 'Bard Song') then

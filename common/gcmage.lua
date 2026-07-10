@@ -11,6 +11,12 @@ local log_conquest = false
 -- This uses the BLM-advanced.lua to calculate more precise Yellow sets. Do not use this unless you know what you're doing.
 local blm_advanced = false
 
+-- Adds /extra and /mb commands to RDM
+local rdm_advanced = false
+
+-- Adds /extra and /mb commands to WHM
+local whm_advanced = false
+
 -- Set to true if you have both Dark Earring and Abyssal earring to turn off Diabolos's Earring override for Dark Magic sets
 local dark_and_abyssal_earrings = true
 
@@ -136,15 +142,13 @@ blmAdvanced = gFunc.LoadFile('common\\BLM-advanced.lua')
 local gcmage = {}
 
 local AliasList = T{
-    'addmp','setmp','resetmp',
-    'mode', -- RDM / WHM / BLM
+    'addmp','setmp','resetmp','lag',
     'csstun','vert', -- RDM
-    'hate', -- RDM / WHM
-    'tp','tptoggle', -- RDM / WHM / BRD / SMN
-    'yellow', -- BLM / WHM
     'mb','hnm', -- BLM
-    'lag',
-    'weapon','wl', -- RDM / WHM / BRD / SMN
+    'hate', -- RDM / WHM
+    'yellow', -- BLM / WHM
+    'mode','extra', -- RDM / WHM / BLM
+    'tp','tptoggle','weapon','wl', -- RDM / WHM / BRD / SMN
 }
 
 local NoMods = T{
@@ -254,16 +258,25 @@ function gcmage.SetVariables()
         gcdisplay.CreateCycle('Weapon Loadout', {[1] = '1', [2] = '2', [3] = '3'})
     end
     if (player.MainJob == 'RDM') then
-        gcdisplay.CreateToggle('Hate', false)
+        gcdisplay.CreateToggle('Hate', false).
+        if (rdm_advanced) then
+            gcdisplay.CreateToggle('MB', false)
+            gcdisplay.CreateToggle('Extra', false)
+        end
     end
     if (player.MainJob == 'BLM') then
         gcdisplay.CreateToggle('Yellow', true)
         gcdisplay.CreateToggle('MB', false)
         gcdisplay.CreateToggle('HNM', false)
+        gcdisplay.CreateToggle('Extra', false)
     end
     if (player.MainJob == 'WHM') then
         gcdisplay.CreateToggle('Hate', false)
         gcdisplay.CreateToggle('Yellow', false)
+        if (whm_advanced) then
+            gcdisplay.CreateToggle('MB', false)
+            gcdisplay.CreateToggle('Extra', false)
+        end
     end
 end
 
@@ -293,9 +306,6 @@ function gcmage.DoCommands(args, sets)
         setMP = 0
         addMP = 0
         print(chat.header('Ashitacast'):append(chat.message('Reset MP')))
-    elseif (args[1] == 'mode') then
-        gcdisplay.AdvanceCycle('Mode')
-        gcinclude.Message('Magic Mode', gcdisplay.GetCycle('Mode'))
     elseif (args[1] == 'tp' and player.MainJob ~= 'BLM') then
         if (args[2] ~= nil) then
             local cycleIndex = tpCycleIndexes[args[2]]
@@ -329,6 +339,19 @@ function gcmage.DoCommands(args, sets)
             gcdisplay.AdvanceCycle('Weapon Loadout')
         end
         gcinclude.Message('Weapon Loadout', gcdisplay.GetCycle('Weapon Loadout'))
+    end
+
+    if (player.MainJob ~= 'BRD' and player.MainJob ~= 'SMN') then
+        if (args[1] == 'mode') then
+            gcdisplay.AdvanceCycle('Mode')
+            gcinclude.Message('Magic Mode', gcdisplay.GetCycle('Mode'))
+        elseif (args[1] == 'extra') then
+            gcdisplay.AdvanceToggle('Extra')
+            gcinclude.Message('Extra', gcdisplay.GetToggle('Extra'))
+        elseif (args[1] == 'mb') then
+            gcdisplay.AdvanceToggle('MB')
+            gcinclude.Message('MB', gcdisplay.GetToggle('MB'))
+        end
     end
 
     if (player.MainJob == 'RDM' or player.MainJob == 'WHM') then
@@ -366,10 +389,7 @@ function gcmage.DoCommands(args, sets)
     end
 
     if (player.MainJob == 'BLM') then
-        if (args[1] == 'mb') then
-            gcdisplay.AdvanceToggle('MB')
-            gcinclude.Message('MB', gcdisplay.GetToggle('MB'))
-        elseif (args[1] == 'hnm') then
+        if (args[1] == 'hnm') then
             gcdisplay.AdvanceToggle('HNM')
             gcinclude.Message('HNM', gcdisplay.GetToggle('HNM'))
         end
@@ -754,24 +774,37 @@ function gcmage.DoMidcast(sets, ninSJMMP, whmSJMMP, blmSJMMP, rdmSJMMP, drkSJMMP
         do return end
     end
 
+    local extraMPThreshold = nil
+    if (player.MainJob == 'BLM') then
+        extraMPThreshold = blmSJMMP
+    elseif (player.MainJob == 'RDM') then
+        extraMPThreshold = rdmSJMMP
+    elseif (player.MainJob == 'WHM') then
+        extraMPThreshold = whmSJMMP
+    end
+
     if (chainspell == 0 and not lag) then
-        if not (player.MainJob == 'BLM' and gcdisplay.GetToggle('Extra') and player.MP >= blmSJMMP) then
+        if (gcdisplay.GetToggle('Extra')) then
+            if (extraMPThreshold == nil or player.MP < extraMPThreshold) then
+                gcmage.SetupInterimEquipSet(sets, false)
+            end
+        else
             gcmage.SetupInterimEquipSet(sets, false)
         end
     end
 
     if (action.Skill == 'Enhancing Magic') then
-        gcmage.EquipEnhancing(blmSJMMP)
+        gcmage.EquipEnhancing(extraMPThreshold)
     elseif (action.Skill == 'Healing Magic') then
-        gcmage.EquipHealing(maxMP)
+        gcmage.EquipHealing(maxMP, extraMPThreshold)
     elseif (action.Skill == 'Elemental Magic') then
-        gcmage.EquipElemental(maxMP, blmSJMMP)
+        gcmage.EquipElemental(maxMP, extraMPThreshold)
     elseif (action.Skill == 'Enfeebling Magic') then
         gcmage.EquipEnfeebling()
     elseif (action.Skill == 'Dark Magic') then
         gcmage.EquipDark(maxMP)
     elseif (action.Skill == 'Divine Magic') then
-        gcmage.EquipDivine(maxMP)
+        gcmage.EquipDivine(maxMP, extraMPThreshold)
     elseif (action.Skill == 'Summoning') then
         lastSummoningElement = action.Element
     end
@@ -972,7 +1005,7 @@ function gcmage.SetupInterimEquipSet(sets, isRanged)
     gFunc.InterimEquipSet(interimSet)
 end
 
-function gcmage.EquipEnhancing(blmNukeExtra)
+function gcmage.EquipEnhancing(extraMPThreshold)
     local player = gData.GetPlayer()
     local action = gData.GetAction()
 
@@ -980,19 +1013,19 @@ function gcmage.EquipEnhancing(blmNukeExtra)
     if (action.Name == 'Stoneskin') then
         gFunc.EquipSet('Stoneskin')
 
-        if (player.MainJob == 'BLM' and gcdisplay.GetToggle('Extra') and player.MP >= blmNukeExtra) then
+        if (gcdisplay.GetToggle('Extra') and extraMPThreshold ~= nil and player.MP >= extraMPThreshold) then
             gFunc.EquipSet('StoneskinExtra')
         end
     elseif (SpikeSpells:contains(action.Name)) then
         gFunc.EquipSet('Spikes')
     elseif (action.Name == 'Phalanx') then
-        if (player.MainJob == 'BLM' and gcdisplay.GetToggle('Extra') and player.MP >= blmNukeExtra) then
+        if (gcdisplay.GetToggle('Extra') and extraMPThreshold ~= nil and player.MP >= extraMPThreshold) then
             gFunc.EquipSet('PhalanxExtra')
         end
     end
 end
 
-function gcmage.EquipHealing(maxMP)
+function gcmage.EquipHealing(maxMP, extraMPThreshold)
     local player = gData.GetPlayer()
     local action = gData.GetAction()
     local environment = gData.GetEnvironment()
@@ -1037,10 +1070,14 @@ function gcmage.EquipHealing(maxMP)
                 gFunc.EquipSet('uggalepih_pendant')
             end
         end
+
+        if (player.MainJob == 'WHM' and gcdisplay.GetToggle('Extra') and extraMPThreshold ~= nil and player.MP >= extraMPThreshold) then
+            gFunc.EquipSet('BanishExtra')
+        end
     end
 end
 
-function gcmage.EquipElemental(maxMP, blmNukeExtra)
+function gcmage.EquipElemental(maxMP, extraMPThreshold)
     local action = gData.GetAction()
     local player = gData.GetPlayer()
     local environment = gData.GetEnvironment()
@@ -1053,7 +1090,7 @@ function gcmage.EquipElemental(maxMP, blmNukeExtra)
     if (ElementalDebuffs:contains(action.Name)) then
         gFunc.EquipSet('NukeDOT')
     else
-        if (player.MainJob == 'BLM' and gcdisplay.GetToggle('Extra') and player.MP >= blmNukeExtra) then
+        if (player.MainJob ~= 'WHM' and gcdisplay.GetToggle('Extra') and extraMPThreshold ~= nil and player.MP >= extraMPThreshold) then
             gFunc.EquipSet('NukeExtra')
             do return end
         end
@@ -1174,7 +1211,7 @@ function gcmage.EquipDark(maxMP)
     gcmage.EquipObi(action)
 end
 
-function gcmage.EquipDivine(maxMP)
+function gcmage.EquipDivine(maxMP, extraMPThreshold)
     local action = gData.GetAction()
 
     if (action.Name == 'Flash') then
@@ -1191,6 +1228,10 @@ function gcmage.EquipDivine(maxMP)
             if (maxMP == 0 or action.MpAftercast < maxMP * 0.51) then
                 gFunc.EquipSet('uggalepih_pendant')
             end
+        end
+
+        if (player.MainJob == 'WHM' and gcdisplay.GetToggle('Extra') and extraMPThreshold ~= nil and player.MP >= extraMPThreshold) then
+            gFunc.EquipSet('BanishExtra')
         end
     end
 
