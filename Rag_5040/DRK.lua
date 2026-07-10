@@ -6,7 +6,7 @@ local snapShotValue = 0.00 -- 0% from gear listed in Preshot set
 -- The following is provided as a convenient saved setting over using the /sethp command. HP will fluctuate with SJ and usage of the command for this is required.
 local max_hp_in_idle_with_regen_gear_equipped = 0 -- Set this to 0 if you do not wish to ever use regen gear.
 
-local use_chaos_burgeonet_for_tp_during_souleater = false
+local use_souleater_set_for_tp = false
 
 -- Comment out the equipment within these sets if you do not have them or do not wish to use them
 local karin_obi = {
@@ -684,7 +684,7 @@ profile.HandleDefault = function()
         end
 
         local souleater = gData.GetBuffCount('Souleater')
-        if (souleater > 0 and use_chaos_burgeonet_for_tp_during_souleater) then
+        if (souleater > 0 and use_souleater_set_for_tp) then
             gFunc.EquipSet(sets.SoulEater)
         end
     elseif (player.HPP >= 85) then
