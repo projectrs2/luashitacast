@@ -258,7 +258,7 @@ function gcmage.SetVariables()
         gcdisplay.CreateCycle('Weapon Loadout', {[1] = '1', [2] = '2', [3] = '3'})
     end
     if (player.MainJob == 'RDM') then
-        gcdisplay.CreateToggle('Hate', false).
+        gcdisplay.CreateToggle('Hate', false)
         if (rdm_advanced) then
             gcdisplay.CreateToggle('MB', false)
             gcdisplay.CreateToggle('Extra', false)
