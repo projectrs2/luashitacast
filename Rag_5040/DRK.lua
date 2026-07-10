@@ -462,6 +462,7 @@ local sets = {
     },
     SoulEater = {
         Head = { Name = 'Chs. Burgeonet +1', Priority = 70 },
+        Ear2 = { Name = 'Cassie Earring', Priority = 20 },
     },
 
     Jump = {
