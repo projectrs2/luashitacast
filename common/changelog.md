@@ -648,4 +648,5 @@
 - Melee - Adds WS_THF sets
 
 ## v3.0.6
+- RNG - Changes special_ammo to a table to allow multiple different weapon types to be supported within a single lua
 - Fixes debuff or cancel functionality targeting

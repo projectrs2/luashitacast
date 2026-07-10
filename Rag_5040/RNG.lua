@@ -7,9 +7,16 @@ local max_hp_in_idle_with_regen_gear_equipped = 0 -- Set this to 0 if you do not
 
 -- Populate these correctly otherwise ammo protection will not work
 local yoichinoyumi = false
-local special_ammo = 'Carapace Bullet'
 local buffer_ranged_attack = 7 -- Time taken for ranged attacks in seconds. Suggested that 7 is used for guns and 6 for bows.
 local buffer_ja_ws = 2
+
+-- Delete these if you do not have them or wish to use them
+local special_ammo = {
+    ['gun'] = 'Carapace Bullet',
+    ['bow'] = 'T.K. Arrow', 
+    ['cannon'] = 'Heavy Shell',
+    ['crossbow'] = 'Irn.Msk. Bolt',
+}
 
 -- Comment out the equipment within these sets if you do not have them or do not wish to use them
 local rng_fenrirs_earring = { -- Used always if active
@@ -100,7 +107,7 @@ local sets = {
     },
 
     TP_LowAcc = {},
-    TP_Aftermath = {}, -- This can be ignored since the UnlimitedShot set will already equip for Namas Arrow Aftermaths
+    TP_Aftermath = {}, -- This can likely be ignored since special_ammo will already be automatically equipped
     TP_Mjollnir_Haste = {},
     TP_HighAcc = {},
 
@@ -247,7 +254,7 @@ local sets = {
         Legs = { Name = 'Sct. Braccae +1', Priority = 60 },
     },
     WS_NamasArrow = {
-        Ammo = special_ammo,
+        Ammo = special_ammo['bow'],
         Head = 'Maat\'s Cap',
         Neck = 'Breeze Gorget',
         Ear1 = 'Triumph Earring',
@@ -294,9 +301,6 @@ local sets = {
     Sharpshot = {
         Legs = { Name = 'Htr. Braccae +1', Priority = 60 },
     },
-    UnlimitedShot = { -- Used for Namas Arrow Aftermath as well as Unlimited Shot. You do not need to edit this.
-        Ammo = special_ammo,
-    },
 
     LockSet1 = {},
     LockSet2 = {},
@@ -330,6 +334,7 @@ Everything below can be ignored.
 ]]
 
 gcmelee = gFunc.LoadFile('common\\gcmelee.lua')
+rangedtypes = gFunc.LoadFile('common\\rangedtypes.lua');
 
 sets.rng_fenrirs_earring = rng_fenrirs_earring
 sets.rng_fire_ring = rng_fire_ring
@@ -384,7 +389,25 @@ local buff_duration = function(raw_duration)
     end
 end
 
-local check_special_ammo = function(buffer)
+local resolve_special_ammo_name = function()
+    local equip = gData.GetEquipment()
+
+    local rtype = nil
+    if (equip.Range ~= nil) then
+        rtype = rangedtypes[equip.Range.Item.Id]
+    end
+
+    if (rtype ~= nil) then
+        local ammo_name = special_ammo[rtype]
+        if (ammo_name ~= nil and ammo_name ~= '') then
+            return ammo_name
+        end
+    end
+
+    return nil
+end
+
+local should_use_special_ammo = function(buffer)
     local unlimitedShot = gData.GetBuffCount('Unlimited Shot') > 0
     local yoichiActive = yoichinoyumi and gData.GetBuffCount('Aftermath') > 0
 
@@ -415,6 +438,22 @@ local check_special_ammo = function(buffer)
     return false
 end
 
+local equip_special_ammo = function(ammo_name)
+    if (ammo_name ~= nil) then
+        gFunc.Equip('Ammo', ammo_name)
+    end
+end
+
+local cancel_if_special_ammo_equipped = function(ammo_name)
+    if (ammo_name ~= nil) then
+        local equipment = gData.GetEquipment()
+        if (equipment.Ammo ~= nil and equipment.Ammo.Name == ammo_name) then
+            print(chat.header('RNG'):append(chat.message('Action Canceled: Special Ammo Protection')))
+            gFunc.CancelAction()
+        end
+    end
+end
+
 profile.HandleAbility = function()
     gcmelee.DoAbility()
 
@@ -424,11 +463,8 @@ profile.HandleAbility = function()
     elseif (action.Name == 'Shadowbind') then
         gFunc.EquipSet(sets.Shadowbind)
 
-        local equipment = gData.GetEquipment()
-        if (equipment.Ammo ~= nil and equipment.Ammo.Name == special_ammo) then
-            print(chat.header('RNG'):append(chat.message('Action Canceled: Special Ammo Protection')))
-            gFunc.CancelAction()
-        end
+        local ammo_name = resolve_special_ammo_name()
+        cancel_if_special_ammo_equipped(ammo_name)
     elseif (action.Name == 'Camouflage') then
         gFunc.EquipSet(sets.Camouflage)
     elseif (action.Name == 'Sharpshot') then
@@ -436,12 +472,11 @@ profile.HandleAbility = function()
     elseif (action.Name == 'Eagle Eye Shot') then
         gFunc.EquipSet(sets.EagleEyeShot)
 
-        local equipment = gData.GetEquipment()
-        if (check_special_ammo(buffer_ja_ws)) then
-            gFunc.EquipSet(sets.UnlimitedShot)
-        elseif (equipment.Ammo ~= nil and equipment.Ammo.Name == special_ammo) then
-            print(chat.header('RNG'):append(chat.message('Action Canceled: Special Ammo Protection')))
-            gFunc.CancelAction()
+        local ammo_name = resolve_special_ammo_name()
+        if (should_use_special_ammo(buffer_ja_ws)) then
+            equip_special_ammo(ammo_name)
+        else
+            cancel_if_special_ammo_equipped(ammo_name)
         end
     end
 end
@@ -453,12 +488,11 @@ end
 profile.HandlePreshot = function()
     gFunc.EquipSet(sets.Preshot)
 
-    local equipment = gData.GetEquipment()
-    if (check_special_ammo(buffer_ranged_attack)) then
-        gFunc.EquipSet(sets.UnlimitedShot)
-    elseif (equipment.Ammo ~= nil and equipment.Ammo.Name == special_ammo) then
-        print(chat.header('RNG'):append(chat.message('Action Canceled: Special Ammo Protection')))
-        gFunc.CancelAction()
+    local ammo_name = resolve_special_ammo_name()
+    if (should_use_special_ammo(buffer_ranged_attack)) then
+        equip_special_ammo(ammo_name)
+    else
+        cancel_if_special_ammo_equipped(ammo_name)
     end
 end
 
@@ -487,8 +521,9 @@ profile.HandleMidshot = function()
         gFunc.EquipSet(sets.Barrage)
     end
 
-    if (check_special_ammo(buffer_ranged_attack - 1)) then
-        gFunc.EquipSet(sets.UnlimitedShot)
+    if (should_use_special_ammo(buffer_ranged_attack - 1)) then
+        local ammo_name = resolve_special_ammo_name()
+        equip_special_ammo(ammo_name)
     end
 end
 
@@ -537,12 +572,11 @@ profile.HandleWeaponskill = function()
             gFunc.EquipSet(sets.WS_Sidewinder)
         end
 
-        local equipment = gData.GetEquipment()
-        if (check_special_ammo(buffer_ja_ws)) then
-            gFunc.EquipSet(sets.UnlimitedShot)
-        elseif (equipment.Ammo ~= nil and equipment.Ammo.Name == special_ammo) then
-            print(chat.header('RNG'):append(chat.message('Action Canceled: Special Ammo Protection')))
-            gFunc.CancelAction()
+        local ammo_name = resolve_special_ammo_name()
+        if (should_use_special_ammo(buffer_ja_ws)) then
+            equip_special_ammo(ammo_name)
+        else
+            cancel_if_special_ammo_equipped(ammo_name)
         end
     end
 
