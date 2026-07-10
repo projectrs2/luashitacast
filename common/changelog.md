@@ -646,3 +646,6 @@
 - All Jobs - Adds a LightningRes_WithBarthunderCarol set that is equipped if barthunder and carol are active for usage of items such as Dream Ribbon or Arete del Sol
 - Melee - Adds Mjollnir Haste sets for TP_DRG sets or DRK Aftermath
 - Melee - Adds WS_THF sets
+
+## v3.0.6
+- Fixes debuff or cancel functionality targeting

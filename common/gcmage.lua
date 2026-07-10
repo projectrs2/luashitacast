@@ -627,7 +627,9 @@ function gcmage.SetupMidcastDelay(sets, fastCastValue, cureCastMeritValue)
     local castDelay = ((castTime * (1 - fastCastValue)) / 1000) - minimumBuffer
     if (castDelay >= packetDelay) then
         gFunc.SetMidDelay(castDelay)
-        gcinclude.DoCancel(action, castDelay - minimumBuffer)
+        if (target.Name == me) then
+            gcinclude.DoCancel(action, castDelay - minimumBuffer)
+        end
     end
 
     local function delayCheat()

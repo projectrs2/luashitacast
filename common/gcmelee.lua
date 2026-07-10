@@ -332,6 +332,8 @@ function gcmelee.SetupMidcastDelay(fastCastValue)
     local player = gData.GetPlayer()
     local action = gData.GetAction()
     local castTime = action.CastTime
+    local target = gData.GetActionTarget()
+    local me = AshitaCore:GetMemoryManager():GetParty():GetMemberName(0)
 
     local hasso = gData.GetBuffCount('Hasso')
     local seigan = gData.GetBuffCount('Seigan')
@@ -351,8 +353,9 @@ function gcmelee.SetupMidcastDelay(fastCastValue)
     local castDelay = ((castTime * castTimeMod * (1 - fastCastValue)) / 1000) - minimumBuffer
     if (castDelay >= packetDelay) then
         gFunc.SetMidDelay(castDelay)
-        gcinclude.DoCancel(action, castDelay - minimumBuffer)
-    end
+        if (target.Name == me) then
+            gcinclude.DoCancel(action, castDelay - minimumBuffer)
+        end    end
 
     -- print(chat.header('DEBUG'):append(chat.message('Cast delay is ' .. castDelay)))
 
