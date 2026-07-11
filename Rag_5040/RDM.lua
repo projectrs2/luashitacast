@@ -862,7 +862,7 @@ profile.OnLoad = function()
         gcdisplay.CreateToggle('F-Ring', fencersRingForced)
     end
 
-    gcmage.Load(3.00)
+    gcmage.Load(310)
     profile.SetMacroBook()
 end
 

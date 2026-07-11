@@ -455,7 +455,7 @@ end
 
 
 function gcinclude.GetVer()
-    return 3.00
+    return 310
 end
 
 return gcinclude

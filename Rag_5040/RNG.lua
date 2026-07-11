@@ -590,7 +590,7 @@ profile.OnLoad = function()
     gcdisplay.CreateCycle('Ranged', {[1] = 'Attack', [2] = 'Accuracy',})
     gcinclude.SetAlias(T{'hnm'})
     gcdisplay.CreateToggle('HNM', false)
-    gcmelee.Load(3.00)
+    gcmelee.Load(310)
     profile.SetMacroBook()
 end
 

@@ -638,7 +638,7 @@ profile.OnLoad = function()
     gcinclude.SetAlias(T{'ammo'})
     gcinclude.SetAlias(T{'th'})
     gcdisplay.CreateCycle('TH', {[1] = 'Auto', [2] = 'On', [3] = 'Off'})
-    gcmelee.Load(3.00)
+    gcmelee.Load(310)
     profile.SetMacroBook()
     profile.WatchTreasureHunter()
 end

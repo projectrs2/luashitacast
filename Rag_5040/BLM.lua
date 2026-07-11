@@ -540,7 +540,7 @@ profile.HandleWeaponskill = function()
 end
 
 profile.OnLoad = function()
-    gcmage.Load(3.00)
+    gcmage.Load(310)
     profile.SetMacroBook()
 end
 

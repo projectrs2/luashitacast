@@ -647,7 +647,8 @@
 - Melee - Adds Mjollnir Haste sets for TP_DRG sets or DRK Aftermath
 - Melee - Adds WS_THF sets
 
-## v3.0.6
+## v3.1.0
+- DRK - Renames the use_chaos_burgeonet_for_tp_during_souleater variable to use_souleater_set_for_tp
 - RNG - Changes special_ammo to a table to allow multiple different weapon types to be supported within a single lua
 - RDM / WHM - Implements a gated /extra and /mb command
-- Fixes debuff or cancel functionality targeting
+- Fixes debuff or cancel functionality targeting for sneak

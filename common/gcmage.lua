@@ -1332,7 +1332,7 @@ function gcmage.AppendSets(sets)
 end
 
 function gcmage.GetVer()
-    return 3.00
+    return 310
 end
 
 return gcmage

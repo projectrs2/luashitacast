@@ -776,7 +776,7 @@ profile.OnLoad = function()
     gcdisplay.CreateCycle('Nuke', {[1] = 'Potency', [2] = 'Accuracy',})
     gcinclude.SetAlias(T{'staff'})
     gcdisplay.CreateCycle('Staff', {[1] = 'Enabled', [2] = 'Disabled',})
-    gcmelee.Load(3.00)
+    gcmelee.Load(310)
     profile.SetMacroBook()
 end
 
