@@ -1,12 +1,12 @@
 # Default Commands:
 ```
 [Regular Toggles]
-/lock   - locks or unlocks all equipment.
-/kite   - toggles Kite set on/off.
-          /kite always takes precedence over any other set overrides active.
-          e.g. if you have /kite and /fireres toggled on,
-          it will equip the kite set instead of or on top of the fire resistance set.
-          this allows you to gain 12% move speed while keeping most of your fire resistance.
+/lock - locks or unlocks all equipment.
+/kite - toggles Kite set on/off.
+        /kite always takes precedence over any other set overrides active.
+        e.g. if you have /kite and /fireres toggled on,
+        it will equip the kite set instead of or on top of the fire resistance set.
+        this allows you to gain 12% move speed while keeping most of your fire resistance.
 
 /weapon /wl - toggles between using Weapon_Loadout sets.
               can be used to specify different weapon loadouts. e.g. virtue stones etc.
@@ -15,10 +15,10 @@
               e.g. /wl 3 will go directly to Weapon_Loadout_3
 
 [Idle Sets] (Changes your idle set to use these sets instead)
-/idle           - toggles between using 2 different idle sets
-                  i.e. Normal and Alternate / Idle and IdleALT.
-/dt /pdt        - toggles DT set on/off.
-/mdt            - toggles MDT set on/off.
+/idle    - toggles between using 2 different idle sets
+           i.e. Normal and Alternate / Idle and IdleALT.
+/dt /pdt - toggles DT set on/off.
+/mdt     - toggles MDT set on/off.
 
 /iceres /ires /bres       - toggles Ice Resistance set on/off.
 /fireres /fres            - toggles Fire Resistance set on/off.
@@ -27,14 +27,14 @@
 /waterres /wres /wares    - toggles Water Resistance set on/off.
 /lightningres /lres /tres - toggles Lightning Resistance set on/off.
 
-/evasion /eva   - toggles Evasion set on/off.
+/evasion /eva - toggles Evasion set on/off.
 
-/override /or   - toggles Override set on/off.
-                  you could also use this set for special sets
-                  such as a MNK Counter set, a DRK Zerg set, Virtue Stone sets,
-                  HELM/Fishing/Crafting sets, as it will simply override your
-                  default idle / TP gear.
-                  Note that any unused resistance set or evasion set can be used similarly.
+/override /or - toggles Override set on/off.
+                you could also use this set for special sets
+                such as a MNK Counter set, a DRK Zerg set, Virtue Stone sets,
+                HELM/Fishing/Crafting sets, as it will simply override your
+                default idle / TP gear.
+                Note that any unused resistance set or evasion set can be used similarly.
 
 [Special Commands]
 /lockset [number] - equips the given lockset and locks equipment
@@ -67,17 +67,34 @@
                   type /addmp without a number to display the current value.
 /resetmp        - resets addmp and setmp values to 0
 
+[RDM / WHM]
+/hate - causes your cures, sleeps, blinds, dispels etc. to equip +enmity set on cast.
+
+[BLM / WHM]
+/yellow - equips gear to lower HP before finishing casts to trigger Sorcerer's Ring or
+          Medicine Ring.
+
 [RDM / WHM / BLM]
-/mode           - toggles Elemental & Enfeebling Magic between Potency (Normal) and
-                  Accuracy sets.
+/mode  - toggles Elemental & Enfeebling Magic between Potency (Normal) and Accuracy sets.
+/mb    - equips gear that gives bonuses to magic burst damage when casting nukes.
+         Note that this must be explicitly turned on for RDM and WHM.
+/extra - Uses NukeExtra, StoneskinExtra, PhalanxExtra and BanishExtra sets
+         if applicable when above a given MP threshold.
+         Threshold is defined by the varable: "extraThreshold".
+         This is intended for nuking with a MaxMP set giving an extra nuke per max MP bar.
+         Override sets such as MDT/PDT/FireRes etc. will not work in InterimMidcast
+         with this enabled.
+         This command is not intended to be used in conjunction with Accuracy /mode
+         or /hnm sets etc.
+         Note that this must be explicitly turned on for RDM and WHM.
 
 [RDM / WHM / BRD / SMN]
-/tp             - cycles TP set between being Off or a LowAcc and HighAcc set.
-                  Using TP modes will cause spells / songs to no longer use staves etc.
-                  as your weapons etc. will be locked to retain TP.
-                  an argument can be given to jump directly to the given tp set.
-                  i.e. "/tp off", "/tp lowacc", or "/tp highacc"
-/tptoggle       - toggles between the last used TP set and Off.
+/tp       - cycles TP set between being Off or a LowAcc and HighAcc set.
+            Using TP modes will cause spells / songs to no longer use staves etc.
+            as your weapons etc. will be locked to retain TP.
+            an argument can be given to jump directly to the given tp set.
+            i.e. "/tp off", "/tp lowacc", or "/tp highacc"
+/tptoggle - toggles between the last used TP set and Off.
 ```
 
 ## Additional Commands for All Melee Jobs:
@@ -85,20 +102,19 @@
 /tp /tpset /mode - toggles TP set between a LowAcc and HighAcc set.
                    this will be overwritten if you have a DT or resistance set etc. enabled.
                    this is disabled for PLD in favour of using Idle sets by default.
-/sethp [number] - sets the HP under which regen gear will be used.
-                  this will override the convenience value located in your .lua file.
-                  /addhp will still work as per normal in conjunction with this.
-                  type /sethp without a number to display the current value.
-/addhp [number] - adds a set amount of HP to the HP value under which regen gear will be used.
-                  this can be used when eating food or for other +HP effects.
-                  type /addhp without a number to display the current value.
-/resethp        - resets addhp and sethp values to 0
+/sethp [number]  - sets the HP under which regen gear will be used.
+                   this will override the convenience value located in your .lua file.
+                   /addhp will still work as per normal in conjunction with this.
+                   type /sethp without a number to display the current value.
+/addhp [number]  - adds a set amount of HP to the HP value under which regen gear is used.
+                   this can be used when eating food or for other +HP effects.
+                   type /addhp without a number to display the current value.
+/resethp         - resets addhp and sethp values to 0
 ```
 
 ## Additional Commands for RDM:
 ```
 [Regular Toggles]
-/hate   - causes your cures, sleeps, blinds, dispels etc. to equip +enmity set on cast.
 /fring  - toggles usage of Fencer's Ring.
 
 [Special Sets]
@@ -113,25 +129,7 @@ These commands and sets were created before /lockset was implemented and do the 
 
 ## Additional Commands for BLM:
 ```
-/yellow - equips gear to lower HP before finishing casts to trigger Sorcerer's Ring.
-          This is on by default.
-/mb     - equips gear that gives bonuses to magic burst damage when casting nukes.
-/hnm    - equips the HNM relevant nuking sets (typically -enmity nuke sets).
-/extra  - Uses NukeExtra and StoneskinExtra sets when above a given MP threshold.
-          Threshold is defined by the varable: "nukeExtraThreshold".
-          This is intended for nuking with a MaxMP set giving an extra -ga3 or T4 nuke
-          per max MP bar.
-          Override sets such as MDT/PDT/FireRes etc. will not work in InterimMidcast
-          with this enabled.
-          This command is not intended to be used in conjunction with Accuracy /mode
-          or /hnm sets etc.
-```
-
-## Additional Commands for WHM:
-```
-/hate   - causes your cures, sleeps, blinds, dispels etc. to equip +enmity set on cast.
-/yellow - equips gear to lower HP before finishing casts to trigger Medicine Ring.
-          This is off by default.
+/hnm    - uses HNM relevant nuking sets (i.e. -enmity sets).
 ```
 
 ## Additional Commands for BRD:
@@ -204,4 +202,5 @@ Alternatively, use /ammo to cycle through them.
 ## Additional Commands for RNG:
 ```
 /ranged - switches Ranged Attacks between Attack and Accuracy modes / sets.
+/hnm    - uses HNM relevant ranged sets (i.e. -enmity sets).
 ```
