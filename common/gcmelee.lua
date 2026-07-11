@@ -297,12 +297,10 @@ function gcmelee.DoPreshot(preshotSet, rangedSet, snapShotValue)
             else
                 print(chat.header('GCMelee'):append(chat.message('Ranged weapons not filled out correctly. Unable to calculate delay for interim set usage.')))
                 gFunc.SetMidDelay(0)
-                gFunc.SetMidDelay(shotDelay)
             end
         else
             print(chat.header('GCMelee'):append(chat.message('Ranged weapons not filled out correctly. Unable to calculate delay for interim set usage.')))
             gFunc.SetMidDelay(0)
-            gFunc.SetMidDelay(shotDelay)
         end
     end
 end
