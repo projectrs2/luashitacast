@@ -14,7 +14,7 @@ local blm_advanced = false
 -- Adds /extra and /mb commands to RDM
 local rdm_advanced = false
 
--- Adds /extra and /mb commands to WHMBM
+-- Adds /extra and /mb commands to WHM
 local whm_advanced = false
 
 -- Set to true if you have both Dark Earring and Abyssal earring to turn off Diabolos's Earring override for Dark Magic sets
