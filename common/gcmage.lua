@@ -14,7 +14,7 @@ local blm_advanced = false
 -- Adds /extra and /mb commands to RDM
 local rdm_advanced = false
 
--- Adds /extra and /mb commands to WHM
+-- Adds /extra and /mb commands to WHMBM
 local whm_advanced = false
 
 -- Set to true if you have both Dark Earring and Abyssal earring to turn off Diabolos's Earring override for Dark Magic sets
@@ -1065,14 +1065,17 @@ function gcmage.EquipHealing(maxMP, extraMPThreshold)
     end
     if ((string.match(action.Name, 'Cure') and gData.GetActionTarget().Type == 'Monster')) then
         gFunc.EquipSet('Banish')
+        if (player.MainJob == 'WHM' and gcdisplay.GetToggle('Extra') and extraMPThreshold ~= nil and player.MP >= extraMPThreshold) then
+            gFunc.EquipSet('BanishExtra')
+            do return end
+        end
         if (action.MppAftercast < 51) then
             if (maxMP == 0 or action.MpAftercast < maxMP * 0.51) then
                 gFunc.EquipSet('uggalepih_pendant')
             end
         end
-
-        if (player.MainJob == 'WHM' and gcdisplay.GetToggle('Extra') and extraMPThreshold ~= nil and player.MP >= extraMPThreshold) then
-            gFunc.EquipSet('BanishExtra')
+        if (player.MainJob == 'WHM' and gcdisplay.GetToggle('MB') == true) then
+            gFunc.EquipSet('MB')
         end
     end
 end
@@ -1224,14 +1227,17 @@ function gcmage.EquipDivine(maxMP, extraMPThreshold)
 
     if (string.match(action.Name, 'Banish') or action.Name == 'Holy') then
         gFunc.EquipSet('Banish')
+        if (player.MainJob == 'WHM' and gcdisplay.GetToggle('Extra') and extraMPThreshold ~= nil and player.MP >= extraMPThreshold) then
+            gFunc.EquipSet('BanishExtra')
+            do return end
+        end
         if (action.MppAftercast < 51) then
             if (maxMP == 0 or action.MpAftercast < maxMP * 0.51) then
                 gFunc.EquipSet('uggalepih_pendant')
             end
         end
-
-        if (player.MainJob == 'WHM' and gcdisplay.GetToggle('Extra') and extraMPThreshold ~= nil and player.MP >= extraMPThreshold) then
-            gFunc.EquipSet('BanishExtra')
+        if (player.MainJob == 'WHM' and gcdisplay.GetToggle('MB') == true) then
+            gFunc.EquipSet('MB')
         end
     end
 

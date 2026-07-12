@@ -781,6 +781,7 @@ local sets = {
     NukeExtra = {},
     StoneskinExtra = {},
     PhalanxExtra = {},
+    MB = {},
 }
 
 profile.SetMacroBook = function()
