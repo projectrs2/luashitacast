@@ -1227,6 +1227,7 @@ function gcmage.EquipDivine(maxMP, extraMPThreshold)
 
     if (string.match(action.Name, 'Banish') or action.Name == 'Holy') then
         gFunc.EquipSet('Banish')
+        local player = gData.GetPlayer()
         if (player.MainJob == 'WHM' and gcdisplay.GetToggle('Extra') and extraMPThreshold ~= nil and player.MP >= extraMPThreshold) then
             gFunc.EquipSet('BanishExtra')
             do return end
