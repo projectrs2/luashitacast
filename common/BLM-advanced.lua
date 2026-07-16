@@ -8,9 +8,9 @@ local blmAdvanced = {}
 -- e.g. Horizon's failure to fix their bugs results in a HP threshold of 77% and and a hp offset required of 55 if using Zenith Mitts +1 on regular potency nukes.
 -- A correctly functioning server would use 0.76 and 0 respectively.
 local hp_threshold = 0.77
-local hp_offset = 55
+local hp_offset = 50
 
-local hpBaseWHM = 1030 -- HP on WHM SJ with nothing equipped
+local hpBaseWHM = 960 -- HP on WHM SJ with nothing equipped
 
 local hpOffset = { -- Difference in HP from WHM SJ
     ['WAR'] = 59,
@@ -38,34 +38,35 @@ local dCape_NukeHNM = 0 -- HP from cape on NukeHNM set
 local dBelt_NukeACC = 20 -- HP from belt on NukeACC set
 local dCape_NukeACC = 0 -- HP from cape on NukeACC set
 
-local Yellow_Advanced_Base = { -- 230
-    val = 230, -- Total HP Down from this set
+local Yellow_Advanced_Base = { -- 220
+    val = 220, -- Total HP Down from this set
     set = {
         Ammo = 'Tiphia Sting',
-        Head = 'Zenith Crown +1',
-        Neck = 'Jeweled Collar +1',
-        Ear1 = 'Loquac. Earring',
+        Head = 'Zenith Crown',
+        Neck = 'Jeweled Collar',
+        Ear1 = 'Loquac. Earring', 
         Ear2 = 'Magnetic Earring',
         Body = 'Mahatma Hpl.',
-        Hands = 'Zenith Mitts +1',
+        Hands = 'Zenith Mitts',
         Ring1 = 'Merman\'s Ring',
         Ring2 = 'Serket Ring',
         Back = 'Umbra Cape',
         Waist = 'Penitent\'s Rope',
         Legs = 'Igqira Lappas',
         Feet = 'Mahatma Pigaches',
+
     }
 }
 
 -- Sequentially applied sets on top of Yellow_Advanced_Base resulting in progressively larger amounts of HP Down
 local Yellow_Advanced_Steps = {
-    [1] = { -- 235
+    [1] = { -- 225
         val = 5,
         set = {
             Feet = 'Rostrum Pumps', -- 5
         },
     },
-    [2] = { -- 240
+    [2] = { -- 230
         val = 5,
         set = {
             Ring1 = 'Ether Ring', -- 30
@@ -73,13 +74,13 @@ local Yellow_Advanced_Steps = {
             Feet = 'Mahatma Pigaches', -- -5
         },
     },
-    [3] = { -- 245
+    [3] = { -- 235
         val = 5,
         set = {
             Feet = 'Rostrum Pumps', -- 5
         },
     },
-    [4] = { -- 250
+    [4] = { -- 240
         val = 5,
         set = {
             Back = { Name = 'Prism Cape', Priority = 100 }, -- -10
@@ -87,13 +88,13 @@ local Yellow_Advanced_Steps = {
             Feet = 'Mahatma Pigaches', -- -5
         },
     },
-    [5] = { -- 255
+    [5] = { -- 245
         val = 5,
         set = {
             Feet = 'Rostrum Pumps', -- 5
         },
     },
-    [6] = { -- 260
+    [6] = { -- 250
         val = 5,
         set = {
             Neck = 'Star Necklace', -- 15
@@ -101,31 +102,32 @@ local Yellow_Advanced_Steps = {
             Waist = { Name = 'Hierarch Belt', Priority = 100 }, -- -20
         },
     },
-    [7] = { -- 265
+    [7] = { -- 255
         val = 5,
         set = {
-            Neck = 'Jeweled Collar +1', -- -15
+            Neck = 'Jeweled Collar', -- -15
             Waist = 'Penitent\'s Rope', -- 20
         },
     },
-    [8] = { -- 270
+    [8] = { -- 260
         val = 5,
         set = {
             Neck = 'Star Necklace', -- 15
             Back = { Name = 'Prism Cape', Priority = 100 }, -- -10
         },
     },
-    [9] = { -- 275
+    [9] = { -- 265
         val = 5,
         set = {
             Back = 'Umbra Cape', -- 10
             Feet = 'Mahatma Pigaches', -- -5
         },
     },
-    [10] = { -- 280
+    [10] = { -- 270
         val = 5,
         set = {
             Feet = 'Rostrum Pumps', -- 5
+
         },
     },
 }
