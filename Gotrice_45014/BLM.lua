@@ -536,24 +536,16 @@ profile.HandleWeaponskill = function()
 end
 
 profile.OnLoad = function()
-    gcinclude.SetAlias(T{'extra'})
-    gcdisplay.CreateToggle('Extra', true)
-    gcmage.Load()
+    gcmage.Load(310)
     profile.SetMacroBook()
 end
 
 profile.OnUnload = function()
     gcmage.Unload()
-    gcinclude.ClearAlias(T{'extra'})
 end
 
 profile.HandleCommand = function(args)
-    if (args[1] == 'extra') then
-        gcdisplay.AdvanceToggle('Extra')
-        gcinclude.Message('Extra', gcdisplay.GetToggle('Extra'))
-    else
-        gcmage.DoCommands(args, sets)
-    end
+    gcmage.DoCommands(args, sets)
 
     if (args[1] == 'horizonmode') then
         profile.HandleDefault()
@@ -594,13 +586,13 @@ end
 local ElementalDebuffs = T{ 'Burn','Rasp','Drown','Choke','Frost','Shock' }
 
 profile.HandleMidcast = function()
-    gcmage.DoMidcast(sets, ninSJMaxMP, whmSJMaxMP, nukeExtraThreshold, rdmSJMaxMP, nil)
+    gcmage.DoMidcast(sets, ninSJMaxMP, whmSJMaxMP, extraThreshold, rdmSJMaxMP, nil)
 
     local player = gData.GetPlayer()
     local action = gData.GetAction()
     if (republic_circlet.Head) then
         if (action.Skill == 'Elemental Magic' and gcdisplay.GetCycle('Mode') == 'Potency') then
-            if (gcdisplay.GetToggle('Extra') and player.MP >= nukeExtraThreshold) then
+            if (gcdisplay.GetToggle('Extra') and player.MP >= extraThreshold) then
                 do return end
             end
             if (not ElementalDebuffs:contains(action.Name)) then
