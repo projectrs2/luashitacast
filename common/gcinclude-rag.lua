@@ -1,5 +1,5 @@
-local horizon_safe_mode = true -- this disables some of the potentially more contentious automation to ensure this LAC profile is not breaking Horizon server rules
-local horizon_legal_mode = true -- this disables functionality that is illegal on horizon
+local horizon_safe_mode = false -- this disables some of the potentially more contentious automation to ensure this LAC profile is not breaking Horizon server rules
+local horizon_legal_mode = false -- this disables functionality that is illegal on horizon
 
 local display_messages = true -- Set to true if you want chat log messages to appear on any /gc command used such as DT, or kite gear toggles
 
@@ -11,7 +11,7 @@ local toggleDisplayHeadOnAbility = true -- Forces blinks on JA usage.
 
 -- Comment out the equipment within these sets if you do not have them or do not wish to use them
 local resentment_cape = {
-    Back = 'Resentment Cape',
+    -- Back = 'Resentment Cape',
 }
 
 local kingdom_aketon = {
@@ -38,15 +38,15 @@ local skulkers_cape = {
 
 -- Disabled on horizon_legal_mode
 local opo_opo_necklace = {
-    -- Neck = 'Opo-opo Necklace',
+    Neck = 'Opo-opo Necklace',
 }
 
 -- Set this to true to confirm that you actually read the README.md and set up the equipment and settings listed above correctly
-local i_can_read_and_follow_instructions_test = false
+local i_can_read_and_follow_instructions_test = true
 
 -- Add additional equipment here that you want to automatically lock when equipping. Ignore's Maat's Cap, Dream Mittens +1, Dream Boots +1 as these will stick on idle.
 local LockableEquipment = {
-    ['Main'] = T{'Warp Cudgel', 'Rep. Signet Staff', 'Kgd. Signet Staff', 'Fed. Signet Staff', 'Treat Staff II', 'Trick Staff II'},
+    ['Main'] = T{'Warp Cudgel', 'Rep. Signet Staff', 'Kgd. Signet Staff', 'Fed. Signet Staff', 'Treat Staff II', 'Trick Staff II', 'Caduceus'},
     ['Sub'] = T{'Warp Cudgel'},
     ['Range'] = T{},
     ['Ammo'] = T{},
@@ -54,7 +54,7 @@ local LockableEquipment = {
     ['Neck'] = T{'Opo-opo Necklace', 'Reraise Gorget'},
     ['Ear1'] = T{'Reraise Earring', 'Republic Earring', 'Kingdom Earring', 'Federation Earring'},
     ['Ear2'] = T{'Reraise Earring', 'Republic Earring', 'Kingdom Earring', 'Federation Earring'},
-    ['Body'] = T{'Custom Gilet +1', 'Custom Top +1', 'Magna Gilet +1', 'Magna Top +1', 'Savage Top +1', 'Elder Gilet +1', 'Wonder Maillot +1', 'Wonder Top +1', 'Mandra. Suit', 'Lord\'s Yukata'},
+    ['Body'] = T{'Custom Gilet +1', 'Custom Top +1', 'Magna Gilet +1', 'Magna Top +1', 'Savage Top +1', 'Elder Gilet +1', 'Wonder Maillot +1', 'Wonder Top +1', 'Mandra. Suit', 'Lord\'s Yukata', 'Alchemist\'s Apron'},
     ['Hands'] = T{},
     ['Ring1'] = T{'Anniversary Ring', 'Emperor Band', 'Chariot Band', 'Empress Band', 'Homing Ring', 'Return Ring', 'Warp Ring', 'Tavnazian Ring', 'Dem Ring', 'Holla Ring', 'Mea Ring', 'Altep Ring', 'Yhoat Ring', 'Albatross Ring'},
     ['Ring2'] = T{'Anniversary Ring', 'Emperor Band', 'Chariot Band', 'Empress Band', 'Homing Ring', 'Return Ring', 'Warp Ring', 'Tavnazian Ring', 'Dem Ring', 'Holla Ring', 'Mea Ring', 'Altep Ring', 'Yhoat Ring', 'Albatross Ring'},
