@@ -9,7 +9,7 @@ local packetDelay = 0.25
 local log_conquest = false
 
 -- This uses the BLM-advanced.lua to calculate more precise Yellow sets. Do not use this unless you know what you're doing.
-local blm_advanced = false
+local blm_advanced = true
 
 -- Adds /extra and /mb commands to RDM
 local rdm_advanced = false
@@ -100,7 +100,7 @@ local wizards_mantle = {
     -- Back = 'Wizard\'s Mantle',
 }
 local republic_gold_medal = { -- Note: Disabled for BRD
-    Neck = 'Rep.Gold Medal',
+    -- Neck = 'Rep.Gold Medal',
 }
 local diabolos_earring = { -- Forces usage of this for NukeACC, EnfeebleACC, and Dark Magic
     -- Ear2 = 'Diabolos\'s Earring',
@@ -127,7 +127,7 @@ local tp_diabolos_earring = {
 }
 
 -- Set this to true to confirm that you actually read the README.md and set up the equipment and settings listed above correctly
-local i_can_read_and_follow_instructions_test = false
+local i_can_read_and_follow_instructions_test = true
 
 --[[
 --------------------------------
