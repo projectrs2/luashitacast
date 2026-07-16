@@ -24,6 +24,10 @@ local dream_ribbon = {
 local war_shinobi_gi = {
     Body = 'War Shinobi Gi',
 }
+local barone_corazza = {
+    Body = 'Barone Corazza',
+}
+
 
 -- Set this to true to confirm that you actually read the README.md and set up the equipment and settings listed above correctly
 local i_can_read_and_follow_instructions_test = true
@@ -174,6 +178,8 @@ function gcmelee.DoDefault(max_hp_in_idle_with_regen_gear_equipped)
                 if (PresidentialHairpinJobs:contains(player.MainJob)) then gFunc.EquipSet('presidential_hairpin') end
             end
             if (player.MainJob == 'NIN') then gFunc.EquipSet('war_shinobi_gi')
+            end
+            if (player.MainJob == 'DRG') then gFunc.EquipSet('barone_corazza')
             end
             gFunc.EquipSet('dream_ribbon')
         end
@@ -454,6 +460,7 @@ function gcmelee.AppendSets(sets)
     sets.presidential_hairpin = presidential_hairpin
     sets.dream_ribbon = dream_ribbon
     sets.war_shinobi_gi = war_shinobi_gi
+    sets.barone_corazza = barone_corazza
 
     return gcinclude.AppendSets(sets)
 end
