@@ -1,0 +1,692 @@
+local profile = {}
+
+local fastCastValue = 0.07 -- 0% from gear listed in Precast set
+local snapShotValue = 0.00 -- 0% from gear listed in Preshot set
+
+local max_hp_in_idle_with_regen_gear_equipped = 1100 -- You could set this to 0 if you do not wish to ever use regen gear
+
+-- Comment out the equipment within these sets if you do not have them or do not wish to use them
+local evasion_master_casters_mitts = {
+    -- Hands = 'Mst.Cst. Mitts',
+}
+
+local sets = {
+    Idle = {
+        Head = 'rog. bonnet +1',
+        Neck = 'Jeweled Collar',
+        Ear1 = 'Novia Earring',
+        Ear2 = 'Ethereal Earring',
+        Body = { Name = 'Scp. Harness +1', Priority = 60 },
+        Hands = { Name = 'War Gloves +1', Priority = 60 },
+        Ring1 = 'Sattva Ring',
+        Ring2 = 'merman\'s Ring',
+        Back = 'boxer\'s mantle',
+        Waist = 'scouter\'s rope',
+        Legs = 'rog. culottes +1',
+	Feet = 'trotter boots',
+    },
+    IdleALT = {
+    },
+
+    IdleDT = { -- Disabled on horizon_safe_mode
+
+    },
+    IdleALTDT = { -- Disabled on horizon_safe_mode
+    },
+
+
+    Resting = {
+
+    },
+    Town = {
+
+	},
+    Movement = {
+	Feet = 'trotter boots',
+},
+    Movement_TP = {
+	Feet = 'trotter boots',
+},
+
+    DT = {
+        Head = 'dream ribbon',
+        Neck = 'Jeweled Collar',
+        Ear1 = 'Novia Earring',
+        Ear2 = 'Ethereal Earring',
+        Body = { Name = 'Scp. Harness +1', Priority = 60 },
+        Hands = { Name = 'War Gloves +1', Priority = 60 },
+        Ring1 = 'Sattva Ring',
+        Ring2 = 'merman\'s Ring',
+        Back = 'boxer\'s mantle',
+        Waist = 'scouter\'s rope',
+        Legs = 'rog. culottes +1',
+	Feet = 'trotter boots',
+    },
+    MDT = { -- Shell IV provides 23% MDT
+        Head = 'dream ribbon',
+        Neck = 'Jeweled Collar',
+        Ear1 = 'merman\'s earring',
+        Ear2 = 'merman\'s earring',
+        Body = { Name = 'Scp. Harness +1', Priority = 60 },
+        Hands = { Name = 'War Gloves +1', Priority = 60 },
+        Ring1 = 'Sattva Ring',
+        Ring2 = 'merman\'s Ring',
+        Back = 'boxer\'s mantle',
+        Waist = 'scouter\'s rope',
+        Legs = 'rog. culottes +1',
+	Feet = 'trotter boots',
+    },
+    FireRes = {},
+    IceRes = {},
+    LightningRes = {},
+    EarthRes = {},
+    WindRes = {},
+    WaterRes = {},
+    Evasion = {
+        Head = 'rog. bonnet +1',
+        Neck = { Name = 'Evasion Torque', Priority = 60 },
+        Ear1 = 'Novia Earring',
+        Ear2 = 'Ethereal Earring',
+        Body = { Name = 'Scp. Harness +1', Priority = 60 },
+        Hands = { Name = 'War Gloves +1', Priority = 60 },
+        Ring1 = 'Toreador\'s Ring',
+        Ring2 = 'Sattva Ring',
+        Back = 'boxer\'s mantle',
+        Waist = { Name = 'Scouter\'s Rope', Priority = -20 },
+        Legs = 'rog. culottes +1',
+        Feet = 'trotter boots',
+	-- Range = 'ungur boomerang',
+},
+
+    Precast = {
+        Ear2 = { Name = 'Loquac. Earring', Priority = 50 },
+        Legs = { Name = 'Homam Cosciales', Priority = 70 },
+    },    
+    SIRD = { -- 102% to Cap
+        Neck = 'Willpower Torque', -- 5
+        Head = 'rog. bonnet +1',
+        Ear1 = 'Novia Earring',
+        Ear2 = 'Ethereal Earring',
+        Body = { Name = 'Scp. Harness +1', Priority = 60 },
+        Hands = { Name = 'War Gloves +1', Priority = 60 },
+        Ring1 = 'Toreador\'s Ring',
+        Ring2 = 'Sattva Ring',
+        Back = 'boxer\'s mantle',
+        Waist = { Name = 'Scouter\'s Rope', Priority = -20 },
+        Legs = 'rog. culottes +1',
+        Feet = 'mountain gaiters',
+},
+    Haste = { -- Used for Utsusemi cooldown
+        Head = 'homam zucchetto',
+        Hands = 'homam manopolas',
+        Body = 'rapparee harness',
+        Waist = 'Swift Belt',
+        Legs = 'homam cosciales',
+        Feet = 'homam gambieras',
+    },
+
+
+    LockSet1 = {},
+    LockSet2 = {},
+    LockSet3 = {},
+
+    TP_LowAcc = {
+        Head = 'homam zucchetto',
+        Neck = 'love torque',
+        Ear1 = 'Brutal Earring',
+        Ear2 = 'Ethereal Earring',
+        Body = 'rapparee harness',
+        Hands = 'homam manopolas',
+        Ring1 = 'Toreador\'s Ring',
+        Ring2 = 'Toreador\'s Ring',
+        Back = 'forager\'s mantle',
+        Waist = 'Swift Belt',
+        Legs = 'homam cosciales',
+        Feet = 'homam gambieras',
+    },
+    TP_Aftermath = {},
+    TP_Mjollnir_Haste = {},
+    TP_HighAcc = {
+        Head = 'Optical hat',
+        Neck = 'love torque',
+        Ear1 = 'Brutal Earring',
+        Ear2 = 'diabolos\'s Earring',
+        Body = 'homam corazza',
+        Hands = 'homam manopolas',
+        Ring1 = 'Toreador\'s Ring',
+        Ring2 = 'Toreador\'s Ring',
+        Back = 'forager\'s mantle',
+        Waist = 'life Belt',
+        Legs = 'homam cosciales',
+        Feet = 'homam gambieras',
+        Ammo = 'tiphia sting',
+    },
+
+    TP_NIN = {
+        Head = 'homam zucchetto',
+        Neck = 'love torque',
+        Ear1 = 'Brutal Earring',
+        Ear2 = 'Stealth Earring',
+        Body = 'rapparee harness',
+        Hands = 'homam manopolas',
+        Ring1 = 'Toreador\'s Ring',
+        Ring2 = 'Toreador\'s Ring',
+        Back = 'forager\'s mantle',
+        Waist = 'Swift Belt',
+        Legs = 'homam cosciales',
+        Feet = 'homam gambieras',
+    },
+    -- Note that these sets are for naked SA/TA/SATAs without WS
+    SA = {
+        Head = 'asn. bonnet +1',
+        Neck = 'love torque',
+        Ear1 = 'Brutal Earring',
+        Ear2 = 'merman\'s Earring',
+        Body = 'dragon harness',
+        Hands = 'hecatomb mittens',
+        Ring1 = 'thunder Ring',
+        Ring2 = 'adroit Ring',
+        Back = 'assassin\'s cape',
+        Waist = 'warwolf Belt',
+        Legs = 'rog. culottes +1',
+        Feet = 'hct. leggings',
+    },
+    TA = {
+        Head = 'rog. bonnet +1',
+        Neck = 'hope torque',
+        Ear1 = 'Brutal Earring',
+        Ear2 = 'merman\'s Earring',
+        Body = 'dragon harness',
+        Hands = 'rog. armlets +1',
+        Ring1 = 'thunder Ring',
+        Ring2 = 'sattva Ring',
+        Back = 'assassin\'s cape',
+        Waist = 'warwolf Belt',
+        Legs = 'rog. culottes +1',
+        Feet = 'hct. leggings',
+    },
+    SATA = {
+        Head = 'asn. bonnet +1',
+        Neck = 'love torque',
+        Ear1 = 'Brutal Earring',
+        Ear2 = 'merman\'s Earring',
+        Body = 'dragon harness',
+        Hands = 'rog. armlets +1',
+        Ring1 = 'thunder Ring',
+        Ring2 = 'sattva Ring',
+        Back = 'assassin\'s cape',
+        Waist = 'warwolf Belt',
+        Legs = 'rog. culottes +1',
+        Feet = 'hct. leggings',
+    },
+
+
+    -- The following demonstrates layering of WS sets that should cover all debatable major WS combinations.
+    WS = {
+        Head = 'asn. bonnet +1',
+        Neck = 'love torque',
+        Ear1 = 'Brutal Earring',
+        Ear2 = 'merman\'s Earring',
+        Body = 'dragon harness',
+	Hands = { Name = 'hecatomb mittens', Priority = 1 },
+        Ring1 = 'thunder Ring',
+        Ring2 = 'adroit Ring',
+        Back = 'assassin\'s cape',
+        Waist = 'warwolf Belt',
+	Legs = { Name = 'rog. culottes +1', Priority = 2 },
+	Feet = { Name = 'Hct. Leggings', Priority = 1 },
+
+    },
+    WS_HighAcc = {
+		Body = { Name = 'scp. Harness +1', Priority = 2 },
+		Ring1 = { Name = 'Toreador\'s Ring', Priority = 2 },
+		Waist = 'Life Belt',
+    },
+
+    WS_Evisceration = {
+        Head = 'asn. bonnet +1',
+        Neck = 'light gorget',
+        Ear1 = 'Brutal Earring',
+        Ear2 = 'merman\'s Earring',
+        Body = 'dragon harness',
+        Hands = 'hecatomb mittens',
+        Ring1 = 'thunder Ring',
+        Ring2 = 'adroit Ring',
+        Back = 'assassin\'s cape',
+        Waist = 'warwolf Belt',
+        Legs = 'rog. culottes +1',
+        Feet = 'hct. leggings',
+    },
+
+    WS_DancingEdge = {
+        Head = 'asn. bonnet +1',
+        Neck = 'soil gorget',
+        Ear1 = 'Brutal Earring',
+        Ear2 = 'merman\'s Earring',
+        Body = 'dragon harness',
+        Hands = 'hecatomb mittens',
+        Ring1 = 'thunder Ring',
+        Ring2 = 'adroit Ring',
+        Back = 'assassin\'s cape',
+        Waist = 'warwolf Belt',
+        Legs = 'rog. culottes +1',
+        Feet = 'hct. leggings',
+    },
+
+    WS_SharkBite = {
+        Head = 'asn. bonnet +1',
+        Neck = 'thunder gorget',
+        Ear1 = 'Brutal Earring',
+        Ear2 = 'merman\'s Earring',
+        Body = 'dragon harness',
+        Hands = 'hecatomb mittens',
+        Ring1 = 'thunder Ring',
+        Ring2 = 'adroit Ring',
+        Back = 'assassin\'s cape',
+        Waist = 'warwolf Belt',
+        Legs = 'rog. culottes +1',
+        Feet = 'hct. leggings',
+    },
+    WS_MercyStroke = {
+		Ear1 = 'Tmph. Earring +1',
+		Body = { Name = 'Hct. Harness +1', Priority = 2 },
+		Ring2 = 'Triumph Ring',
+		Waist = 'Warwolf Belt',
+    },
+
+    -- Applied on SA WS and SATA WS
+    WS_SA = {
+		Feet = { Name = 'Hct. Leggings', Priority = 1 },
+    },
+
+    -- Applied only on TA WS but NOT SATA WS
+    WS_TA = {
+		Ear1 = 'Drone Earring',
+        Hands = 'Rogue\'s Armlets +1',
+        Legs = 'Drn. Leggings +1',
+    },
+    WS_TA_SharkBite = {
+		Ring2 = 'sattva Ring',
+    },
+    WS_TA_MercyStroke = {
+		Hands = { Name = 'Hct. Mittens +1', Priority = 1 },
+    },
+
+    WS_SATA_SharkBite = {
+        Hands = 'Rogue\'s Armlets +1',
+    },
+
+    Flee = {
+        Feet = 'rog. poulaines +1',
+    },
+    Hide = {},
+	Steal_HPDown = {},
+    Steal = {
+        Head = 'rog. bonnet +1',
+        Feet = 'rogue\'s poulaines',
+	Legs = 'assassin\'s culottes',
+        Hands = 'rog. armlets +1',
+    },
+    Mug = {
+        Head = 'asn. bonnet +1',
+    },
+    TH = {
+        Neck = 'Nanaa\'s Charm',
+        Hands = 'Asn. Armlets +1',
+    },
+
+    Preshot = {}, -- This set is pointless until ToAU+ when Snapshot on equipment is available
+
+    Ranged = {
+        Ring1 = 'merman\'s Ring',
+        Ring2 = 'merman\'s Ring',
+        Neck = 'faith torque',
+        Legs = 'rog. culottes +1',
+        Body = 'dragon harness',
+        Head = 'rog. bonnet +1',
+        Feet = 'homam gambieras',
+        Back = 'assassin\'s cape',
+    },
+    Ranged_INT = {
+        Ring1 = 'snow Ring',
+        Ring2 = 'snow Ring',
+        Neck = 'prudence torque',
+        Body = 'dragon harness',
+        Head = 'rog. bonnet +1',
+        Feet = 'homam gambieras',
+		Ear1 = 'Abyssal earring',
+        Ear2 = 'Morion Earring +1',
+	Back = 'assassin\'s cape',
+},
+
+    None = { -- Default range / ammo equipment while idle
+        -- Range = 'displaced',
+        -- Ammo = 'displaced',
+    },
+    None_RA = { -- Used for ranged attacks when None set is being used instead of the bolt sets defined below
+        Range = 'displaced',
+        Ammo = 'Pebble',
+    },
+    Acid = {
+        Ammo = 'Acid Bolt',
+    },
+    Sleep = {
+        Ammo = 'Sleep Bolt',
+    },
+    Bloody = {
+        Ammo = 'Bloody Bolt',
+    },
+    Blind = {
+        Ammo = 'Blind Bolt',
+    },
+    Venom = {
+        Ammo = 'Venom Bolt',
+    },
+
+    Weapon_Loadout_1 = {},
+    Weapon_Loadout_2 = {},
+    Weapon_Loadout_3 = {},
+
+    VileElixir = {},
+}
+
+profile.SetMacroBook = function()
+    AshitaCore:GetChatManager():QueueCommand(1, '/macro book 2')
+    AshitaCore:GetChatManager():QueueCommand(1, '/macro set 1')
+end
+
+--[[
+--------------------------------
+Everything below can be ignored.
+--------------------------------
+]]
+
+gcmelee = gFunc.LoadFile('common\\gcmelee.lua')
+
+sets.evasion_master_casters_mitts = evasion_master_casters_mitts
+profile.Sets = gcmelee.AppendSets(sets)
+
+local ammo = T{'aacid','asleep','abloody','ablind','avenom','anone'}
+
+local AmmoTable1 = {
+    [1] = 'None',
+    [2] = 'Acid',
+    [3] = 'Sleep',
+    [4] = 'Bloody',
+    [5] = 'Blind',
+    [6] = 'Venom',
+}
+local AmmoTable2 = {
+    ['none'] = 1,
+    ['acid'] = 2,
+    ['sleep'] = 3,
+    ['bloody'] = 4,
+    ['blind'] = 5,
+    ['venom'] = 6,
+}
+
+local saOverride = 0
+local taOverride = 0
+local taggedMobs = {}
+
+actionpacket = gFunc.LoadFile('common\\actionpacket.lua')
+
+profile.HandleAbility = function()
+    gcmelee.DoAbility()
+
+    local action = gData.GetAction()
+    if (action.Name == 'Flee') then
+        gFunc.EquipSet(sets.Flee)
+    elseif (action.Name == 'Hide') then
+        gFunc.EquipSet(sets.Hide)
+    elseif (action.Name == 'Steal') then
+		gFunc.ForceEquipSet(sets.Steal_HPDown)
+        gFunc.EquipSet(sets.Steal)
+    elseif (action.Name == 'Mug') then
+        gFunc.EquipSet(sets.Mug)
+    elseif (action.Name == 'Sneak Attack') then
+        saOverride = os.clock() + 2
+    elseif (action.Name == 'Trick Attack') then
+        taOverride = os.clock() + 2
+    end
+
+    if (profile.NeedTH()) then
+        gFunc.EquipSet(sets.TH)
+    end
+end
+
+profile.HandleItem = function()
+    gcinclude.DoItem()
+end
+
+profile.getRangedSet = function()
+    local rangedSet = gFunc.Combine(sets.Preshot, sets.Ranged)
+
+    if (gcdisplay.GetCycle('Ammo') == 'Bloody') then
+        rangedSet = gFunc.Combine(rangedSet, sets.Ranged_INT)
+    elseif (gcdisplay.GetCycle('Ammo') == 'None') then
+        return sets.None_RA
+    end
+
+    return gFunc.Combine(rangedSet, sets[gcdisplay.GetCycle('Ammo')])
+end
+
+profile.HandlePreshot = function()
+    gcmelee.DoPreshot(sets.Preshot, profile.getRangedSet(), snapShotValue)
+end
+
+profile.HandleMidshot = function()
+    gcmelee.DoMidshot(sets, profile.getRangedSet())
+    if (profile.NeedTH()) then
+        gFunc.EquipSet(sets.TH)
+    end
+end
+
+profile.HandleWeaponskill = function()
+    gcmelee.DoWS()
+
+    local action = gData.GetAction()
+    if (action.Name == 'Evisceration') then
+        gFunc.EquipSet(sets.WS_Evisceration)
+    elseif (action.Name == 'Shark Bite') then
+        gFunc.EquipSet(sets.WS_SharkBite)
+    elseif (action.Name == 'Dancing Edge') then
+        gFunc.EquipSet(sets.WS_DancingEdge)
+    elseif (action.Name == 'Mercy Stroke') then
+        gFunc.EquipSet(sets.WS_MercyStroke)
+    end
+
+    local sa = gData.GetBuffCount('Sneak Attack')
+    local ta = gData.GetBuffCount('Trick Attack')
+
+    if (sa == 1) or (os.clock() < saOverride) then
+        gFunc.EquipSet(sets.WS_SA)
+    end
+
+    if (sa == 1 and ta == 1) or (os.clock() < saOverride and os.clock() < taOverride) then
+        if (action.Name == 'Shark Bite') then
+            gFunc.EquipSet(sets.WS_SATA_SharkBite)
+        end
+    elseif (ta == 1) or (os.clock() < taOverride) then
+        gFunc.EquipSet(sets.WS_TA)
+        if (action.Name == 'Shark Bite') then
+            gFunc.EquipSet(sets.WS_TA_SharkBite)
+        elseif (action.Name == 'Mercy Stroke') then
+            gFunc.EquipSet(sets.WS_TA_MercyStroke)
+        end
+    end
+
+    if (profile.NeedTH()) then
+        gFunc.EquipSet(sets.TH)
+    end
+end
+
+profile.OnLoad = function()
+    gcinclude.SetAlias(ammo)
+    gcdisplay.CreateCycle('Ammo', AmmoTable1)
+    gcinclude.SetAlias(T{'ammo'})
+    gcinclude.SetAlias(T{'th'})
+    gcdisplay.CreateCycle('TH', {[1] = 'Auto', [2] = 'On', [3] = 'Off'})
+    gcmelee.Load()
+    profile.SetMacroBook()
+    profile.WatchTreasureHunter()
+end
+
+profile.OnUnload = function()
+    gcmelee.Unload()
+    gcinclude.ClearAlias(ammo)
+    gcinclude.ClearAlias(T{'ammo'})
+    gcinclude.ClearAlias(T{'th'})
+    ashita.events.unregister('packet_in', 'watch_treasure_hunter');
+end
+
+profile.HandleCommand = function(args)
+    if (args[1] == 'th') then
+        gcdisplay.AdvanceCycle('TH')
+        gcinclude.Message('TH', gcdisplay.GetCycle('TH'))
+    elseif (args[1] == 'ammo') then
+        gcdisplay.AdvanceCycle('Ammo')
+        gcinclude.Message('Ammo', gcdisplay.GetCycle('Ammo'))
+    elseif (ammo:contains(args[1])) then
+        gcdisplay.SetCycleIndex('Ammo', AmmoTable2[args[1]:sub(2)])
+        gcinclude.Message('Ammo', gcdisplay.GetCycle('Ammo'))
+    else
+        gcmelee.DoCommands(args)
+    end
+
+    if (args[1] == 'horizonmode') then
+        profile.HandleDefault()
+    end
+end
+
+profile.HandleDefault = function()
+    gcmelee.DoDefault(max_hp_in_idle_with_regen_gear_equipped)
+
+    local player = gData.GetPlayer()
+    if (player.SubJob == 'NIN' and player.Status == 'Engaged') then
+        local sub = gData.GetEquipment().Sub
+        if (sub ~= nil) then
+            if (sub.Resource.Slots == 3) then -- if this is a 1h weapon
+                gFunc.EquipSet('TP_NIN')
+            end
+        end
+    end
+
+    gFunc.EquipSet(sets[gcdisplay.GetCycle('Ammo')])
+
+    gcmelee.DoDefaultOverride()
+
+    if (conquest:GetOutsideControl() and gcdisplay.IdleSet == 'Evasion') then
+        gFunc.EquipSet('evasion_master_casters_mitts')
+    end
+
+    local sa = gData.GetBuffCount('Sneak Attack')
+    local ta = gData.GetBuffCount('Trick Attack')
+
+    if (sa == 1 and ta == 1) or (os.clock() < saOverride and os.clock() < taOverride) then
+        gFunc.EquipSet(sets.SATA)
+    elseif (sa == 1) or (os.clock() < saOverride) then
+        gFunc.EquipSet(sets.SA)
+    elseif (ta == 1) or (os.clock() < taOverride) then
+        gFunc.EquipSet(sets.TA)
+    end
+
+    gFunc.EquipSet(gcinclude.BuildLockableSet(gData.GetEquipment()))
+
+    if (player.Status == 'Engaged' and profile.NeedTH()) then
+        gFunc.EquipSet(sets.TH)
+    end
+end
+
+profile.HandlePrecast = function()
+    gcmelee.DoPrecast(fastCastValue)
+end
+
+profile.HandleMidcast = function()
+    gcmelee.DoMidcast(sets)
+
+    local action = gData.GetAction()
+    if (action.Skill ~= 'Ninjutsu' and profile.NeedTH()) then
+        gFunc.EquipSet(sets.TH)
+    end
+end
+
+profile.NeedTH = function()
+    if (gcdisplay.GetCycle('TH') == 'Auto') then
+        local targetId
+        local actionTarget = gData.GetActionTarget()
+
+        if (actionTarget ~= nil) then
+            targetId = actionTarget.Id
+        else
+            local targetIndex = gData.GetTargetIndex()
+            if (targetIndex == 0) then
+                return false
+            end
+
+            targetId = AshitaCore:GetMemoryManager():GetEntity():GetServerId(targetIndex)
+        end
+
+        if bit.band(targetId, 0xFF000000) ~= 0 then  --isMob
+            return taggedMobs[targetId] == nil
+        end
+
+        return false
+    end
+
+    return gcdisplay.GetCycle('TH') == 'On'
+end
+
+profile.WatchTreasureHunter = function()
+    ashita.events.register('packet_in', 'watch_treasure_hunter', function(e)
+        local playerEntity = GetPlayerEntity();
+        if (not playerEntity) then
+            return
+        end
+
+        if (e.id == 0x28) then
+            local type = { 
+                [1] = true, -- Attack
+                [2] = true, -- Ranged Attack
+                [3] = true, -- Ability 
+                [4] = true, 
+                [6] = true -- Also ability? (Provoke)
+            };
+            local packet = actionpacket:parse(e);
+            if (packet.UserId == playerEntity.ServerId) then
+                if (type[packet.Type]) then
+                    local reaction = { 
+                        [0] = true, -- Spell Hit / ???
+                        [8] = true, -- Attack Hit/Miss
+                        [9] = true, -- Legacy
+                        [16] = true, -- Range Attack Hit / Provoke ?
+                        [17] = true, -- Range Attack Miss
+                    }
+                    for _, target in ipairs(packet.Targets) do
+                        for i = 1, #target.Actions do
+                            local action = target.Actions[1]
+                            if bit.band(target.Id, 0xFF000000) ~= 0 then -- isMob, also triggers on NPC but it's benign
+                                if (packet.Type == 3 or reaction[action.Reaction]) and target.Id then
+                                    taggedMobs[target.Id] = true;
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        elseif (e.id == 0x29) then
+            local deathMes = T { 6, 20, 97, 113, 406, 605, 646 };
+            -- Mob died, clear from table
+            local message = struct.unpack('i2', e.data, 0x18 + 1);
+            if (deathMes:contains(message)) then
+                local target = struct.unpack('i4', e.data, 0x08 + 1);
+                taggedMobs[target] = nil;
+            end
+        elseif (e.id == 0x0A or e.id == 0x0B) then
+            -- Changed zone, clear all TH
+            taggedMobs = {};
+        end
+    end)
+end
+
+return profile
