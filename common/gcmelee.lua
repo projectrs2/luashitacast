@@ -173,7 +173,7 @@ function gcmelee.DoDefault(max_hp_in_idle_with_regen_gear_equipped)
             if (conquest:GetOutsideControl()) then
                 if (PresidentialHairpinJobs:contains(player.MainJob)) then gFunc.EquipSet('presidential_hairpin') end
             end
-            if (player.MainJob ~= 'NIN') then gFunc.EquipSet('war_shinobi_gi')
+            if (player.MainJob == 'NIN') then gFunc.EquipSet('war_shinobi_gi')
             end
             gFunc.EquipSet('dream_ribbon')
         end
@@ -453,6 +453,7 @@ function gcmelee.AppendSets(sets)
     sets.garden_bangles = garden_bangles
     sets.presidential_hairpin = presidential_hairpin
     sets.dream_ribbon = dream_ribbon
+    sets.war_shinobi_gi = war_shinobi_gi
 
     return gcinclude.AppendSets(sets)
 end
