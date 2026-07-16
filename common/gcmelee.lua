@@ -7,7 +7,7 @@ local packetDelay = 0.25
 
 -- Comment out the equipment within these sets if you do not have them or do not wish to use them
 local fenrirs_earring = { -- Not used for RNG at all
-    Ear2 = 'Fenrir\'s Earring',
+    -- Ear2 = 'Fenrir\'s Earring',
 }
 local muscle_belt = {
     Waist = 'Muscle Belt +1',
@@ -20,6 +20,9 @@ local presidential_hairpin = {
 }
 local dream_ribbon = {
     Head = 'Dream Ribbon',
+}
+local war_shinobi_gi = {
+    Body = 'War Shinobi Gi',
 }
 
 -- Set this to true to confirm that you actually read the README.md and set up the equipment and settings listed above correctly
@@ -170,6 +173,8 @@ function gcmelee.DoDefault(max_hp_in_idle_with_regen_gear_equipped)
             if (conquest:GetOutsideControl()) then
                 if (PresidentialHairpinJobs:contains(player.MainJob)) then gFunc.EquipSet('presidential_hairpin') end
             end
+            if (player.MainJob ~= 'NIN') then gFunc.EquipSet('war_shinobi_gi')
+            end
             gFunc.EquipSet('dream_ribbon')
         end
     end
@@ -223,7 +228,7 @@ function gcmelee.DoDefault(max_hp_in_idle_with_regen_gear_equipped)
     end
 
     if (not gcinclude.horizon_safe_mode) then
-        if (player.MainJob == 'PLD' or player.MainJob == 'NIN' or (player.MainJob == 'DRK' and gcdisplay.GetToggle('Hate'))) then
+        if (player.MainJob == 'PLD' or player.MainJob == 'NIN' or player.MainJob == 'THF' or (player.MainJob == 'DRK' and gcdisplay.GetToggle('Hate'))) then
             if (player.SubJob == 'NIN' or player.MainJob == 'NIN') then
                 local function GetShadowCount()
                     for buffId, shadowCount in pairs(utsuBuffs) do
